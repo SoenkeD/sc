@@ -13,8 +13,6 @@ func init() {
 	importCmd.Flags().StringVarP(&config.Module, "module", "m", "", "name of the module e.g. github.com/SoenkeD/sc")
 	viper.BindPFlag("module", rootCmd.PersistentFlags().Lookup("module"))
 
-	importCmd.Flags().StringVarP(&ctlName, "name", "n", "", "name of the ctl")
-
 	rootCmd.AddCommand(importCmd)
 }
 
