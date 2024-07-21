@@ -6,7 +6,8 @@ type TemplatePackage struct {
 
 	// The name of the controllers which should use this
 	// template package.
-	// Controllers not in this list will ignore this package.
+	// Controllers not in this list will ignore this package,
+	// if the list is empty.
 	Exclusive []string
 }
 
@@ -40,15 +41,15 @@ type Import struct {
 }
 
 type Config struct {
-	RepoRoot                   string `validate:"required"`
-	Language                   string `validate:"required"`
-	ImportPathSeparator        string `validate:"required"`
 	CtlDir                     string `validate:"required"`
-	Module                     string
-	EnableGeneratedFilePrefix  bool
 	EnableFileCapitalization   bool
-	ForceUnitSetupRegeneration bool
-	Templates                  []TemplatePackage
+	EnableGeneratedFilePrefix  bool
 	Exports                    []Export
+	ForceUnitSetupRegeneration bool
+	ImportPathSeparator        string `validate:"required"`
 	Imports                    []Import
+	Language                   string `validate:"required"`
+	Module                     string
+	RepoRoot                   string `validate:"required"`
+	Templates                  []TemplatePackage
 }
