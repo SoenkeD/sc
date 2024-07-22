@@ -45,7 +45,6 @@ func validateCfg() {
 }
 
 func init() {
-	cobra.OnInitialize(readCfg, validateCfg)
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "path to the config file")
 }
 
@@ -53,6 +52,12 @@ var rootCmd = &cobra.Command{
 	Use:   "sc",
 	Short: "SC is a state chart code generator",
 	Long:  ``,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		if cmd.Name() != "init" {
+			readCfg()
+			validateCfg()
+		}
+	},
 }
 
 func Execute() {

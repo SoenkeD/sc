@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -54,25 +55,26 @@ func downloadFile(fileInfo GithubFileInfo, localTargetPath string, token, dirPre
 	return nil
 }
 
-func DownloadFolder(repoOwner, repoName, folderPath, localPath, token, dirPrefix string) error {
+func DownloadFolder(repoOwner, repoName, folderPath, localPath, token, dirPrefix, localPathPrefix string) error {
 	files, err := downloadFileInfos(repoOwner, repoName, folderPath, token)
 	if err != nil {
 		return err
 	}
 
-	for _, file := range files {
+	for idx, file := range files {
 		relativeFilePath := strings.TrimPrefix(file.Path, dirPrefix)
 		localFilePath := filepath.Join(localPath, relativeFilePath)
 		if file.Type == "dir" {
-			if err := os.MkdirAll(localFilePath, os.ModePerm); err != nil {
+			if err := os.MkdirAll(filepath.Join(localPathPrefix, localFilePath), os.ModePerm); err != nil {
 				return err
 			}
-			err = DownloadFolder(repoOwner, repoName, file.Path, localPath, token, dirPrefix)
+			err = DownloadFolder(repoOwner, repoName, file.Path, localPath, token, dirPrefix, localPathPrefix)
 			if err != nil {
 				return err
 			}
 		} else {
-			err = downloadFile(file, localPath, token, dirPrefix)
+			log.Printf("downloading (%d, %d) %s\n", idx+1, len(files), filepath.Join(file.Path, file.Name))
+			err = downloadFile(file, filepath.Join(localPathPrefix, localPath), token, dirPrefix)
 			if err != nil {
 				log.Println(err, file.Name, file.DownloadURL)
 				return err
@@ -111,4 +113,24 @@ func downloadFileInfos(repoOwner, repoName, folderPath, token string) ([]GithubF
 	}
 
 	return files, nil
+}
+
+func ExtractGitHubInfo(gitHubURL string) (owner, repo, filePath string, err error) {
+
+	parsedURL, err := url.Parse(gitHubURL)
+	if err != nil {
+		return "", "", "", fmt.Errorf("failed to parse URL: %w", err)
+	}
+
+	pathSegments := strings.Split(strings.Trim(parsedURL.Path, "/"), "/")
+
+	if len(pathSegments) < 4 {
+		return "", "", "", fmt.Errorf("invalid GitHub URL format")
+	}
+
+	owner = pathSegments[0]
+	repo = pathSegments[1]
+	filePath = strings.Join(pathSegments[3:], "/")
+
+	return owner, repo, filePath, nil
 }

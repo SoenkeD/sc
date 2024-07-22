@@ -43,6 +43,23 @@ imports:
 templates:
   - dir: "sc/templates"
 ```
+## init
+Executing `sc init` initializes a project
+based on a Github repository.
+Find a sc template repository and
+follow the instructions there. 
+
+Golang example:
+```bash
+sc init --setup https://github.com/SoenkeD/sc-go-templates/main/sc/setup \
+	--name myctl \
+	--root $PWD/demo  \
+	--module demo
+```
+`--name` is the name of the first controller to create \
+`--root` is the desired root of the project (the directory should not exist) \
+`--module` is the name of the desired Golang module e.g. `github.com/SoenkeD/sc`
+`--container` can be used to enable podman (defaults to docker) 
 
 ## export
 tbd.

@@ -106,3 +106,21 @@ func CheckStateMachineFileExists(filePath, filename string) bool {
 	_, err = os.Stat(fileName)
 	return !os.IsNotExist(err)
 }
+
+func CreateDirs(dirPath string) error {
+	err := os.MkdirAll(dirPath, 0755)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func WriteFile(filePath, fileStr string) error {
+	err := os.WriteFile(filePath, []byte(fileStr), 0755)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

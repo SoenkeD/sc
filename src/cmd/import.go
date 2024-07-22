@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/SoenkeD/sc/src/types"
 	"github.com/SoenkeD/sc/src/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -16,25 +17,36 @@ func init() {
 	rootCmd.AddCommand(importCmd)
 }
 
+func importAll(imports []types.Import, localPathPrefix string) error {
+
+	for _, importItem := range imports {
+
+		err := utils.DownloadFolder(
+			importItem.RepoOwner,
+			importItem.RepoName,
+			importItem.RepoPath,
+			importItem.LocalPath,
+			importItem.Token,
+			importItem.RepoPath,
+			localPathPrefix,
+		)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 var importCmd = &cobra.Command{
 	Use:   "import",
 	Short: "Import templates from sources",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
-		for _, importItem := range config.Imports {
-
-			err := utils.DownloadFolder(
-				importItem.RepoOwner,
-				importItem.RepoName,
-				importItem.RepoPath,
-				importItem.LocalPath,
-				importItem.Token,
-				importItem.RepoPath,
-			)
-
-			if err != nil {
-				return err
-			}
+		err := importAll(config.Imports, "")
+		if err != nil {
+			return err
 		}
 
 		return nil

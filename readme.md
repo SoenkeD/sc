@@ -14,7 +14,7 @@ consider visiting [statechart.dev](https://statecharts.dev),
 which contains a nice collection of information and explanations 
 regarding this topic. 
 
-## Get Started (base)
+## Get Started
 1. Install the `sc` tool from GitHub: \
 `go install github.com/SoenkeD/sc`
 

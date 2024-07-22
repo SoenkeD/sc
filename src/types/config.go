@@ -33,23 +33,23 @@ type ExportItem struct {
 }
 
 type Import struct {
-	RepoOwner string `validate:"required"`
-	RepoName  string `validate:"required"`
-	RepoPath  string `validate:"required"`
-	LocalPath string `validate:"required"`
-	Token     string
+	RepoOwner string `yaml:"repoOwner" validate:"required"`
+	RepoName  string `yaml:"repoName" validate:"required"`
+	RepoPath  string `yaml:"repoPath" validate:"required"`
+	LocalPath string `yaml:"localPath" validate:"required"`
+	Token     string `yaml:"token"`
 }
 
 type Config struct {
-	CtlDir                     string `validate:"required"`
-	EnableFileCapitalization   bool
-	EnableGeneratedFilePrefix  bool
-	Exports                    []Export
-	ForceUnitSetupRegeneration bool
-	ImportPathSeparator        string `validate:"required"`
-	Imports                    []Import
-	Language                   string `validate:"required"`
-	Module                     string
-	RepoRoot                   string `validate:"required"`
-	Templates                  []TemplatePackage
+	CtlDir                     string            `yaml:"ctlDir" validate:"required"`
+	EnableFileCapitalization   bool              `yaml:"enableFileCapitalization"`
+	EnableGeneratedFilePrefix  bool              `yaml:"EnableGeneratedFilePrefix"`
+	Exports                    []Export          `yaml:"exports"`
+	ForceUnitSetupRegeneration bool              `yaml:"forceUnitSetupRegeneration"`
+	ImportPathSeparator        string            `yaml:"importPathSeparator" validate:"required"`
+	Imports                    []Import          `yaml:"imports"`
+	Language                   string            `yaml:"language" validate:"required"`
+	Module                     string            `yaml:"module"`
+	RepoRoot                   string            `yaml:"repoRoot" validate:"required"`
+	Templates                  []TemplatePackage `yaml:"templates"`
 }
