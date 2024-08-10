@@ -22,7 +22,7 @@ func ExecuteCommand(command, dir string) (string, error) {
 
 	output, err := cmd.CombinedOutput() //  stdout & stderr
 	if err != nil {
-		return "", err
+		return string(output), err
 	}
 
 	return string(output), nil

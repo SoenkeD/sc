@@ -227,8 +227,9 @@ func execInitCmd(cmd string) error {
 		return fmt.Errorf("user stopped the init script")
 	}
 
-	_, err = utils.ExecuteCommand(execCmd, config.RepoRoot)
+	cmdOut, err := utils.ExecuteCommand(execCmd, config.RepoRoot)
 	if err != nil {
+		log.Printf("Executing the command=%s failed with=%s and output %s", execCmd, err, cmdOut)
 		return err
 	}
 
