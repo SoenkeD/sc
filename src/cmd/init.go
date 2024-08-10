@@ -140,7 +140,16 @@ var initCmd = &cobra.Command{
 		}
 
 		umlFile := filepath.Join(initCtlPath, initCtl+".plantuml")
-		err = utils.WriteFile(umlFile, string(umlBytes))
+		umlContent, err := templates.ExecTemplate(umlFile, string(umlBytes), templateInputInitFiles{
+			Cfg:       config,
+			InitCtl:   initCtl,
+			Container: containerDriver,
+		}, nil)
+		if err != nil {
+			return err
+		}
+
+		err = utils.WriteFile(umlFile, umlContent)
 		if err != nil {
 			return err
 		}
