@@ -139,6 +139,9 @@ func getTransitionUmlLine(transitions []string, transition stage2.ParseTransitio
 	targetName := transitionParts[len(transitionParts)-1]
 	if targetName == "End" {
 		targetName = "[*]"
+		if wasVisited {
+			targetName += " #Green"
+		}
 	} else if targetName == "Start" {
 		targetName = transitionParts[len(transitionParts)-2]
 	}
