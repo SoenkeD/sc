@@ -18,6 +18,15 @@ tbd.
 ### (TODO) --force
 tbd.
 
+## path
+Executing `sc path --name myctl --route route.json` will generate
+a visualization of the path taken through the state machine. 
+It create / overwrites a file named `myctl.route.plantuml` 
+in your current directory. 
+
+![Example output](imgs/feature_log_example.png)
+
+
 ## import
 Executing `sc import` will download the templates,
 which are configured in `sc.yaml`,

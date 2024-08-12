@@ -133,3 +133,70 @@ var _ = Describe("Stage Two", Ordered, func() {
 	})
 
 })
+
+var _ = Describe("Extract Route Information", func() {
+
+	route := []string{
+		"StartState",
+		"StartState/////happy/ProcessingStart/false",
+		"ProcessingStartState",
+		"ProcessingStartState///CheckAlwaysTrue//normal/ProcessingDemoing/false",
+		"ProcessingDemoingState",
+		"AddMsgAction",
+		"AddMsgAction",
+		"ProcessingDemoingState/Print/Go to BurnState/CheckAlwaysTrue//normal/ProcessingBurning/false",
+		"PrintAction",
+		"ProcessingBurningState",
+		"PrintAction",
+		"PrintMsgsAction",
+		"ProcessingBurningState/////happy/ProcessingEnd/false",
+		"ProcessingEndState",
+		"ProcessingEndState/////happy/End/false",
+		"EndState",
+	}
+
+	states, trans := stage2.ExtractVisitedTransactions(route)
+
+	It("Extract states from route", func() {
+		Expect(states).To(ConsistOf(
+			"Start",
+			"ProcessingStart",
+			"ProcessingDemoing",
+			"ProcessingBurning",
+			"ProcessingEnd",
+			"End",
+		))
+	})
+
+	It("Extract transitions from route", func() {
+		Expect(trans).To(ConsistOf(
+			"/Start/////happy/ProcessingStart/false",
+			"/ProcessingStart///CheckAlwaysTrue//normal/ProcessingDemoing/false",
+			"/ProcessingDemoing/Print/Go to BurnState/CheckAlwaysTrue//normal/ProcessingBurning/false",
+			"/ProcessingBurning/////happy/ProcessingEnd/false",
+			"/ProcessingEnd/////happy/End/false",
+		))
+	})
+})
+
+var _ = Describe("PrintTransitionType", func() {
+	It("should return a transition with bold when taType is TransitionTypeHappy", func() {
+		result := stage2.PrintTransitionType(types.TransitionTypeHappy, "")
+		Expect(result).To(Equal("-[bold]->"))
+	})
+
+	It("should return a transition with dotted when taType is TransitionTypeError", func() {
+		result := stage2.PrintTransitionType(types.TransitionTypeError, "")
+		Expect(result).To(Equal("-[dotted]->"))
+	})
+
+	It("should return a transition with color when color is provided", func() {
+		result := stage2.PrintTransitionType(types.TransitionTypeHappy, "red")
+		Expect(result).To(Equal("-[bold,red]->"))
+	})
+
+	It("should return a transition with dotted and color when taType is TransitionTypeError and color is provided", func() {
+		result := stage2.PrintTransitionType(types.TransitionTypeError, "blue")
+		Expect(result).To(Equal("-[dotted,blue]->"))
+	})
+})
