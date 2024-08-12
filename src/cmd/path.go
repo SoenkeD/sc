@@ -139,9 +139,6 @@ func getTransitionUmlLine(transitions []string, transition stage2.ParseTransitio
 	targetName := transitionParts[len(transitionParts)-1]
 	if targetName == "End" {
 		targetName = "[*]"
-		if wasVisited {
-			targetName += " #Green"
-		}
 	} else if targetName == "Start" {
 		targetName = transitionParts[len(transitionParts)-2]
 	}
@@ -159,11 +156,7 @@ func getTransitionUmlLine(transitions []string, transition stage2.ParseTransitio
 			guardParamStr = fmt.Sprintf("(%s)", strings.Join(transition.GuardParams, ", "))
 		}
 
-		var colorStr string
-		if wasVisited {
-			colorStr = "<color:Green>"
-		}
-		guardStr = fmt.Sprintf("%s[ %s%s%s ]", colorStr, negationStr, transition.Guard, guardParamStr)
+		guardStr = fmt.Sprintf("[ %s%s%s ]", negationStr, transition.Guard, guardParamStr)
 	}
 
 	var actionStr string
@@ -178,6 +171,9 @@ func getTransitionUmlLine(transitions []string, transition stage2.ParseTransitio
 	delimiter := ""
 	if transition.Action != "" || transition.Guard != "" {
 		delimiter = ": "
+		if wasVisited {
+			delimiter += "<color:Green> "
+		}
 	}
 
 	if wasVisited && usedCurrentStateName == "[*]" {
