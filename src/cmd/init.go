@@ -21,6 +21,9 @@ func init() {
 	initCmd.Flags().StringVarP(&config.Module, "module", "m", "", "name of the module e.g. github.com/SoenkeD/sc")
 	viper.BindPFlag("module", rootCmd.PersistentFlags().Lookup("module"))
 
+	initCmd.Flags().StringVarP(&config.CtlDir, "ctl", "", "", "relative path of the controller directory")
+	viper.BindPFlag("ctl", rootCmd.PersistentFlags().Lookup("ctl"))
+
 	initCmd.Flags().StringVarP(&initCtl, "name", "n", "", "name of the controller to create e.g. demo")
 	initCmd.Flags().StringVarP(&setupSourceRepo, "setup", "s", "", "url of the setup repository")
 	initCmd.Flags().StringVarP(&containerDriver, "container", "d", "docker", "container provider docker | podman. Defaults to docker")
@@ -114,6 +117,9 @@ var initCmd = &cobra.Command{
 
 		initCfg.RepoRoot = config.RepoRoot
 		initCfg.Module = config.Module
+		if config.CtlDir != "" {
+			initCfg.CtlDir = config.CtlDir
+		}
 		config = initCfg
 
 		outYml, err := yaml.Marshal(initCfg)
