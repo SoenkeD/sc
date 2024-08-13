@@ -45,7 +45,7 @@ func Transform2DiskFormat(input GenerationInput, tplIn templates.GenerateTemplat
 		return Generation{}, err
 	}
 
-	stateMachine, err := generateStateMachine(input.CtlName, importRoot, tplIn.TemplatedBaseFiles["sm"], input.States)
+	stateMachine, err := generateStateMachine(input.CtlName, importRoot, tplIn.TemplatedBaseFiles["sm"], input.States, input.HasActions, input.HasGuards)
 	if err != nil {
 		return Generation{}, err
 	}

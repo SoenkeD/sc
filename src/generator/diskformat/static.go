@@ -8,14 +8,18 @@ type GenerateStateMachineTplInput struct {
 	ImportRoot string
 	Name       string
 	States     []string
+	HasActions bool
+	HasGuards  bool
 }
 
-func generateStateMachine(ctlName, importRoot, stateMachineTpl string, states []string) (GeneratedFile, error) {
+func generateStateMachine(ctlName, importRoot, stateMachineTpl string, states []string, hasActions, hasGuards bool) (GeneratedFile, error) {
 
 	code, err := templates.ExecTemplate(ctlName, stateMachineTpl, GenerateStateMachineTplInput{
 		Name:       ctlName,
 		ImportRoot: importRoot,
 		States:     states,
+		HasActions: hasActions,
+		HasGuards:  hasGuards,
 	}, getFuncMap())
 	if err != nil {
 		return GeneratedFile{}, err

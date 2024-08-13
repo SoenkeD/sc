@@ -20,6 +20,8 @@ type GenerationInput struct {
 	GuardTests               map[string]string
 	TemplatedStateExtensions map[string]string
 	States                   []string
+	HasActions               bool
+	HasGuards                bool
 }
 
 type GeneratedFile struct {
