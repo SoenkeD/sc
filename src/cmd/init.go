@@ -93,9 +93,18 @@ var initCmd = &cobra.Command{
 			return err
 		}
 
-		err = utils.CreateDirs(config.RepoRoot)
+		exists, err := utils.FileOrDirExists(config.RepoRoot)
 		if err != nil {
 			return err
+		}
+
+		if !exists {
+			err = utils.CreateDirs(config.RepoRoot)
+			if err != nil {
+				return err
+			}
+		} else {
+			log.Println("skipped creation of root directory")
 		}
 
 		scPath := filepath.Join(config.RepoRoot, "sc")
