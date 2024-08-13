@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func UserConfirm(msg string) bool {
+func UserConfirm(msg string) (bool, bool) {
 	reader := bufio.NewReader(os.Stdin)
 
 	fmt.Print(msg + " ")
@@ -15,10 +15,10 @@ func UserConfirm(msg string) bool {
 	input, err := reader.ReadString('\n')
 	if err != nil {
 		fmt.Println("Error reading input:", err)
-		return false
+		return false, false
 	}
 
 	input = strings.TrimSpace(input)
 
-	return input == "y"
+	return input == "y", input == "s"
 }

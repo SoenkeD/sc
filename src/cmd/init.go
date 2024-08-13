@@ -127,7 +127,7 @@ var initCmd = &cobra.Command{
 			return err
 		}
 
-		ctlPath := filepath.Join(config.RepoRoot, "src/controller")
+		ctlPath := filepath.Join(config.RepoRoot, config.CtlDir)
 		initCtlPath := filepath.Join(ctlPath, initCtl)
 		err = utils.CreateDirs(initCtlPath)
 		if err != nil {
@@ -223,7 +223,14 @@ func execInitCmd(cmd string) error {
 		return err
 	}
 
-	if !utils.UserConfirm("Execute '" + execCmd + "'? (y/n) ") {
+	confirm, skipped := utils.UserConfirm("Execute '" + execCmd + "'? (y/s/n) ")
+
+	if skipped {
+		log.Println("skipped action")
+		return nil
+	}
+
+	if !confirm {
 		return fmt.Errorf("user stopped the init script")
 	}
 
