@@ -124,3 +124,15 @@ func WriteFile(filePath, fileStr string) error {
 
 	return nil
 }
+
+func RemoveFiles(files []string) error {
+
+	for _, file := range files {
+		err := os.Remove(file)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}

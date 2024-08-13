@@ -1,6 +1,7 @@
 package generator
 
 import (
+	"log"
 	"os"
 	"path/filepath"
 
@@ -10,6 +11,7 @@ import (
 	"github.com/SoenkeD/sc/src/generator/stage2"
 	"github.com/SoenkeD/sc/src/generator/templates"
 	"github.com/SoenkeD/sc/src/types"
+	"github.com/SoenkeD/sc/src/utils"
 )
 
 func ParseUmlFile(umlPath string) (st2 stage2.ParseUmlStage2, err error) {
@@ -37,7 +39,7 @@ func ParseUmlFile(umlPath string) (st2 stage2.ParseUmlStage2, err error) {
 	return
 }
 
-func Generate(cfg types.Config, ctlName string, tplIn templates.GenerateTemplatesInput) error {
+func Generate(cfg types.Config, ctlName string, tplIn templates.GenerateTemplatesInput, clearUnnecessary bool) error {
 
 	umlFilePath := filepath.Join(cfg.RepoRoot, cfg.CtlDir, ctlName, ctlName+".plantuml")
 	st2, err := ParseUmlFile(umlFilePath)
@@ -83,9 +85,17 @@ func Generate(cfg types.Config, ctlName string, tplIn templates.GenerateTemplate
 		return err
 	}
 
-	err = aftercompilation.WarnUnnecessaryFiles(actionsDir, st2.Actions, guardsDir, st2.Guards, cfg.Language)
+	unnecessary, err := aftercompilation.WarnUnnecessaryFiles(actionsDir, st2.Actions, guardsDir, st2.Guards, cfg.Language)
 	if err != nil {
 		return err
+	}
+
+	if clearUnnecessary {
+		log.Println("clearing no longer need files")
+		err = utils.RemoveFiles(unnecessary)
+		if err != nil {
+			return err
+		}
 	}
 
 	err = aftercompilation.WriteToDisk(gen, cfg.Language, cfg.EnableGeneratedFilePrefix, cfg.EnableFileCapitalization)

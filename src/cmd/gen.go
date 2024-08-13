@@ -11,6 +11,7 @@ import (
 )
 
 var ctlName string
+var clearUnnecessary bool
 
 func init() {
 	genCmd.Flags().StringVarP(&config.RepoRoot, "root", "r", "", "base path to generate ctl in")
@@ -20,6 +21,8 @@ func init() {
 	viper.BindPFlag("module", rootCmd.PersistentFlags().Lookup("module"))
 
 	genCmd.Flags().StringVarP(&ctlName, "name", "n", "", "name of the ctl")
+
+	genCmd.Flags().BoolVarP(&clearUnnecessary, "clear", "u", false, "if true it deletes unnecessary actions & guards")
 
 	rootCmd.AddCommand(genCmd)
 }
@@ -84,6 +87,7 @@ var genCmd = &cobra.Command{
 			config,
 			ctlName,
 			templates,
+			clearUnnecessary,
 		)
 		if err != nil {
 			return err

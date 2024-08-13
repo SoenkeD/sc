@@ -46,16 +46,16 @@ func CollectUnnecessary(dir string, codeIDs []string, fileExtension string, excl
 	return unusedFiles, nil
 }
 
-func WarnUnnecessaryFiles(actionsDir string, actions []string, guardsDir string, guards []string, fileExtension string) error {
+func WarnUnnecessaryFiles(actionsDir string, actions []string, guardsDir string, guards []string, fileExtension string) ([]string, error) {
 
 	notNeededActionFiles, err := CollectUnnecessary(actionsDir, actions, fileExtension, []string{"actions"})
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	notNeededGuardFiles, err := CollectUnnecessary(guardsDir, guards, fileExtension, []string{"guards"})
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	if len(notNeededActionFiles) > 0 {
@@ -66,5 +66,5 @@ func WarnUnnecessaryFiles(actionsDir string, actions []string, guardsDir string,
 		log.Printf("INFO: Can remove these guard files: \n%s\n", strings.Join(notNeededGuardFiles, "\n"))
 	}
 
-	return nil
+	return append(notNeededActionFiles, notNeededGuardFiles...), nil
 }

@@ -1,5 +1,5 @@
 # Cli Features
-
+This file explains the different cli commands.
 
 ## gen
 Executing `sc gen --name myctl` will generate 
@@ -13,7 +13,9 @@ So when generating an action it will use the template if available,
 but it would not overwrite an existing action with that template.  
 
 ### (TODO) --clear
-tbd.
+The `sc` tool automatically detects no longer needed actions and guards
+and prints a message during the generation process.
+By adding the option `--clear` these files are removed automatically.
 
 ### (TODO) --force
 tbd.
