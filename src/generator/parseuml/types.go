@@ -53,7 +53,9 @@ func (uml *ParseUmlStage1) AddStateGroup(stateGroup string) {
 }
 
 func (uml *ParseUmlStage1) AddTransition(parsedTa ParsedTransition) {
-	merged := string(parsedTa.Type) + parsedTa.Start + parsedTa.Target + parsedTa.Guard + parsedTa.Action
+	merged := string(parsedTa.Type) + parsedTa.Start + parsedTa.Target +
+		parsedTa.Guard + strings.Join(parsedTa.GuardParams, ",") +
+		parsedTa.Action + strings.Join(parsedTa.ActionParams, ",")
 	uml.LinesInOrder = append(uml.LinesInOrder, fmt.Sprintf("%s%s", LINE_TRANSITION, merged))
 	uml.Transitions[merged] = parsedTa
 }

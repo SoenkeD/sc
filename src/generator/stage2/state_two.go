@@ -83,6 +83,7 @@ func Stage2(stage1 parseuml.ParseUmlStage1) (uml ParseUmlStage2, err error) {
 			addStatePath := PathJoin(statePath, stateAction.State)
 			uml.AddAction2State(addStatePath, stateAction.Action, stateAction.ActionParams)
 			uml.Actions = AddUnique(uml.Actions, stateAction.Action)
+
 			continue
 		}
 
@@ -121,11 +122,12 @@ func CheckForHappyPath(states map[string]ParsedState) error {
 	for stateID, state := range states {
 
 		if stateID == "/End" {
+			// the final state has no outgoing transitions
 			continue
 		}
 
 		if len(state.Transitions) == 0 {
-			return fmt.Errorf("state %s: every state must have any outgoing transitions", stateID)
+			return fmt.Errorf("state %s: every state must have some outgoing transitions", stateID)
 		}
 
 		if state.Transitions[len(state.Transitions)-1].Type != types.TransitionTypeHappy {

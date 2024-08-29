@@ -84,9 +84,6 @@ func (uml *ParseUmlStage2) AddTransition2State(state string, parsedTa ParseTrans
 	appState.Transitions = append(appState.Transitions, parsedTa)
 	uml.States[state] = appState
 
-	targetState := uml.States[parsedTa.Target]
-	uml.States[parsedTa.Target] = targetState
-
 	if parsedTa.Guard != "" {
 		uml.Guards = AddUnique(uml.Guards, parsedTa.Guard)
 	}

@@ -89,7 +89,7 @@ var _ = Describe("Stage One", Ordered, func() {
 			Target: "SettingUp",
 		}))
 
-		Expect(out.Transitions).To(HaveKeyWithValue("normalSettingUpRaisingErrorFailedClearError", parseuml.ParsedTransition{
+		Expect(out.Transitions).To(HaveKeyWithValue("normalSettingUpRaisingErrorFailedClearErrorSetupError", parseuml.ParsedTransition{
 			Type:         "normal",
 			Start:        "SettingUp",
 			Target:       "RaisingError",
@@ -145,7 +145,7 @@ var _ = Describe("Stage One", Ordered, func() {
 			Target: "[*]",
 		}))
 
-		Expect(out.Transitions).To(HaveKeyWithValue("normal[*]PrintingErrorHasError", parseuml.ParsedTransition{
+		Expect(out.Transitions).To(HaveKeyWithValue("normal[*]PrintingErrorHasErrorReadConfigError", parseuml.ParsedTransition{
 			Type:        "normal",
 			Start:       "[*]",
 			Target:      "PrintingError",
