@@ -73,7 +73,7 @@ func ParseLine(line string, uml *ParseUmlStage1) (string, error) {
 		if parseErr != nil {
 			return "state_action", fmt.Errorf(parseErr.Error())
 		}
-		uml.AddStateAction(contentParts[0], action, actionParams)
+		uml.AddStateAction(strings.TrimSpace(contentParts[0]), action, actionParams)
 		return "", nil
 	}
 
