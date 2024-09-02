@@ -3,7 +3,6 @@ package templates
 import (
 	"bytes"
 	"fmt"
-	"path/filepath"
 	"slices"
 	"text/template"
 
@@ -17,7 +16,7 @@ func LoadTemplate(targetCodes, templatedCodes map[string]string, module, ctlDir,
 	for actionID := range targetCodes {
 
 		if actionTemplate, ok := templatedCodes[actionID]; ok {
-			templates[actionID] = fmt.Sprintf(actionTemplate, filepath.Join(module, ctlDir, ctlName))
+			templates[actionID] = actionTemplate
 		}
 	}
 

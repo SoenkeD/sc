@@ -46,7 +46,15 @@ func generateAction(actionID, actionCode, importRoot, actionTpl string, template
 
 	var isTemplated bool
 	if _, ok := templatedActions[actionID]; ok {
-		code = templatedActions[actionID]
+
+		tplCode, err := templates.ExecTemplate(actionID, templatedActions[actionID], GenerateActionTestTplInput{
+			ImportRoot: importRoot,
+		}, &template.FuncMap{})
+		if err != nil {
+			return GeneratedFile{}, err
+		}
+
+		code = tplCode
 		isTemplated = true
 	}
 
