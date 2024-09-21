@@ -124,12 +124,10 @@ var initCmd = &cobra.Command{
 			return err
 		}
 
-		initCfg.RepoRoot = config.RepoRoot
 		initCfg.Module = config.Module
 		if config.CtlDir != "" {
 			initCfg.CtlDir = config.CtlDir
 		}
-		config = initCfg
 
 		outYml, err := yaml.Marshal(initCfg)
 		if err != nil {
@@ -141,6 +139,10 @@ var initCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+
+		// set merged config to be used
+		initCfg.RepoRoot = config.RepoRoot // the repo root should not be stored in sc.yaml
+		config = initCfg
 
 		ctlPath := filepath.Join(config.RepoRoot, config.CtlDir)
 		initCtlPath := filepath.Join(ctlPath, initCtl)
