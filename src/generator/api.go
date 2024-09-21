@@ -58,6 +58,7 @@ func Generate(cfg types.Config, ctlName string, tplIn templates.GenerateTemplate
 		ctlName,
 		actionsDir,
 		guardsDir,
+		cfg.Language,
 	)
 	if err != nil {
 		return err

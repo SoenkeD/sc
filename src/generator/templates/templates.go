@@ -93,7 +93,10 @@ func executeDefaultTemplates(st2 stage2.ParseUmlStage2, tpl GenerateTemplatesInp
 	}, nil
 }
 
-func removeExisting(defaults filledTemplates, actionsDir, guardsDir string) (filledTemplates, error) {
+func removeExisting(defaults filledTemplates, actionsDir, guardsDir, language string) (filledTemplates, error) {
+
+	languageFilePostfix := "." + language
+
 	tpls := filledTemplates{
 		Actions:     map[string]string{},
 		ActionTests: map[string]string{},
@@ -102,7 +105,7 @@ func removeExisting(defaults filledTemplates, actionsDir, guardsDir string) (fil
 		States:      defaults.States,
 	}
 
-	existingActions := CollectExisting(defaults.Actions, actionsDir, ".go")
+	existingActions := CollectExisting(defaults.Actions, actionsDir, languageFilePostfix)
 	for actionID, action := range defaults.Actions {
 
 		if !slices.Contains(existingActions, actionID) {
@@ -111,7 +114,7 @@ func removeExisting(defaults filledTemplates, actionsDir, guardsDir string) (fil
 
 	}
 
-	existingActionTests := CollectExisting(defaults.Actions, actionsDir, "_test.go")
+	existingActionTests := CollectExisting(defaults.Actions, actionsDir, "_test"+languageFilePostfix)
 	for actionID, action := range defaults.ActionTests {
 
 		if !slices.Contains(existingActionTests, actionID) {
@@ -120,7 +123,7 @@ func removeExisting(defaults filledTemplates, actionsDir, guardsDir string) (fil
 
 	}
 
-	existingGuards := CollectExisting(defaults.Guards, guardsDir, ".go")
+	existingGuards := CollectExisting(defaults.Guards, guardsDir, languageFilePostfix)
 	for guardID, guard := range defaults.Guards {
 
 		if !slices.Contains(existingGuards, guardID) {
@@ -129,7 +132,7 @@ func removeExisting(defaults filledTemplates, actionsDir, guardsDir string) (fil
 
 	}
 
-	existingGuardTests := CollectExisting(defaults.GuardTests, guardsDir, "_test.go")
+	existingGuardTests := CollectExisting(defaults.GuardTests, guardsDir, "_test"+languageFilePostfix)
 	for guardID, guard := range defaults.GuardTests {
 
 		if !slices.Contains(existingGuardTests, guardID) {
@@ -149,7 +152,9 @@ type GenerateTemplatesInput struct {
 	TemplatedControllerExtensions map[string]string
 }
 
-func ExecuteTemplates(st2 stage2.ParseUmlStage2, tpl GenerateTemplatesInput, repoRoot, module, ctlDir, ctlName, actionsDir, guardsDir string) (Codes, error) {
+func ExecuteTemplates(st2 stage2.ParseUmlStage2, tpl GenerateTemplatesInput, repoRoot, module, ctlDir, ctlName, actionsDir, guardsDir, language string) (Codes, error) {
+
+	languageFilePostfix := "." + language
 
 	defaults, err := executeDefaultTemplates(st2, tpl)
 	if err != nil {
@@ -161,25 +166,25 @@ func ExecuteTemplates(st2 stage2.ParseUmlStage2, tpl GenerateTemplatesInput, rep
 	templatedGuardCodes := LoadTemplate(defaults.Guards, tpl.TemplatedGuards, module, ctlDir, ctlName)
 
 	// overwrite with existing
-	clearedTpls, err := removeExisting(defaults, actionsDir, guardsDir)
+	clearedTpls, err := removeExisting(defaults, actionsDir, guardsDir, languageFilePostfix)
 	if err != nil {
 		return Codes{}, nil
 	}
 
-	existingActions := CollectExisting(defaults.Actions, actionsDir, ".go")
+	existingActions := CollectExisting(defaults.Actions, actionsDir, languageFilePostfix)
 	for _, actionID := range existingActions {
 		defaults.Actions[actionID] = ""
 	}
-	existingActionTests := CollectExisting(defaults.Actions, actionsDir, "_test.go")
+	existingActionTests := CollectExisting(defaults.Actions, actionsDir, "_test"+languageFilePostfix)
 	for _, actionID := range existingActionTests {
 		defaults.ActionTests[actionID] = ""
 	}
 
-	existingGuards := CollectExisting(defaults.Guards, guardsDir, ".go")
+	existingGuards := CollectExisting(defaults.Guards, guardsDir, languageFilePostfix)
 	for _, guardID := range existingGuards {
 		defaults.Guards[guardID] = ""
 	}
-	existingGuardTests := CollectExisting(defaults.GuardTests, guardsDir, "_test.go")
+	existingGuardTests := CollectExisting(defaults.GuardTests, guardsDir, "_test"+languageFilePostfix)
 	for _, guardID := range existingGuardTests {
 		defaults.GuardTests[guardID] = ""
 	}

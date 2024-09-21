@@ -101,7 +101,7 @@ func Transform2DiskFormat(input GenerationInput, tplIn templates.GenerateTemplat
 	}
 	gen.Files = append(gen.Files, guardTests...)
 
-	gen.Files = append(gen.Files, generateStateExtensions(input.TemplatedStateExtensions)...)
+	gen.Files = append(gen.Files, generateStateExtensions(input.TemplatedStateExtensions, cfg.Language)...)
 
 	return gen, nil
 }

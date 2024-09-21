@@ -50,6 +50,6 @@ type Config struct {
 	Imports                    []Import          `yaml:"imports"`
 	Language                   string            `yaml:"language" validate:"required"`
 	Module                     string            `yaml:"module"`
-	RepoRoot                   string            `yaml:"repoRoot" validate:"required"`
+	RepoRoot                   string            `yaml:"repoRoot"`
 	Templates                  []TemplatePackage `yaml:"templates"`
 }
