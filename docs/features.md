@@ -92,8 +92,12 @@ The template:
 [*] -[bold]-> Initializing
 
 state Initializing {
-    [*] -[bold]-> [*]
+  [*] -[bold]-> InitializingClient
+
+  InitializingClient: do / InitClient
+  InitializingClient -[bold]-> [*]
 }
+Initializing -[dotted]-> Closing
 Initializing -[bold]-> Processing
 
 Processing -[dotted]-> Closing
@@ -103,8 +107,8 @@ state Closing {
   [*] --> HandlingError : [ HasError ]
   [*] -[bold]-> [*]
 
-  HandlingError: SetErrorMsg
-  HandlingError: ClearError
+  HandlingError: do / SetErrorMsg
+  HandlingError: do / ClearError
   HandlingError -[bold]-> [*]
 }
 
@@ -118,10 +122,10 @@ The extension:
 state Processing {
   [*] -[bold]-> Loading
 
-  Loading: Load
+  Loading: do / Load
   Loading -[bold]-> Writing
 
-  Writing: Write
+  Writing: do / Write
   Writing -[bold]-> [*]
 }
 ```
@@ -131,3 +135,5 @@ Run:
 sc extend --template path/to/template.plantuml --extension path/to/extension
 ```
 You can add multiple extensions. 
+The first line in the each file will be removed and 
+replace with `@startuml CTL_NAME`.
