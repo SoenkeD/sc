@@ -150,6 +150,7 @@ type GenerateTemplatesInput struct {
 	TemplatedStateExtensions      map[string]string
 	TemplatedBaseFiles            map[string]string
 	TemplatedControllerExtensions map[string]string
+	TemplatedPerController        map[string]string
 }
 
 func ExecuteTemplates(st2 stage2.ParseUmlStage2, tpl GenerateTemplatesInput, repoRoot, module, ctlDir, ctlName, actionsDir, guardsDir, language string) (Codes, error) {

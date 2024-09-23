@@ -79,6 +79,8 @@ func Generate(cfg types.Config, ctlName string, tplIn templates.GenerateTemplate
 		RelativeCtlRoot:          cfg.CtlDir,
 		HasActions:               len(st2.Actions) > 0,
 		HasGuards:                len(st2.Guards) > 0,
+		PerController:            tplIn.TemplatedPerController,
+		PerControllerTargets:     cfg.PerControllerTargets,
 	}
 
 	gen, err := diskformat.Transform2DiskFormat(input, tplIn, cfg)

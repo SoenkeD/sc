@@ -22,7 +22,12 @@ func WriteToDisk(gen diskformat.Generation, fileExtension string, enableGenerate
 
 	for _, file := range gen.Files {
 
-		filePath := filepath.Join(gen.BasePath, file.GetFilePath(fileExtension, enableGeneratedFileExtension, enableFileCapitalization))
+		genFilePath := file.GetFilePath(fileExtension, enableGeneratedFileExtension, enableFileCapitalization)
+		filePath := filepath.Join(gen.BasePath, genFilePath)
+		if file.PathStartsAtRepoRoot {
+			filePath = filepath.Join(gen.RepoRoot, genFilePath)
+		}
+
 		if !file.ForceWrite {
 			_, err := os.Stat(filePath)
 			if !os.IsNotExist(err) {

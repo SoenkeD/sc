@@ -52,4 +52,5 @@ type Config struct {
 	Module                     string            `yaml:"module"`
 	RepoRoot                   string            `yaml:"repoRoot"`
 	Templates                  []TemplatePackage `yaml:"templates"`
+	PerControllerTargets       map[string]string `yaml:"perControllerTargets"`
 }

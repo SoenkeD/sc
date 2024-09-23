@@ -35,6 +35,7 @@ func ReadTemplates() (templates.GenerateTemplatesInput, error) {
 		TemplatedStateExtensions:      map[string]string{},
 		TemplatedBaseFiles:            map[string]string{},
 		TemplatedControllerExtensions: map[string]string{},
+		TemplatedPerController:        map[string]string{},
 	}
 
 	for _, tplPackage := range config.Templates {
@@ -64,6 +65,12 @@ func ReadTemplates() (templates.GenerateTemplatesInput, error) {
 
 		controllerExtensionsFilesPath := filepath.Join(tplPackage.Dir, "controller")
 		err = utils.ReadTplFilesInDir(controllerExtensionsFilesPath, out.TemplatedControllerExtensions)
+		if err != nil {
+			return templates.GenerateTemplatesInput{}, err
+		}
+
+		perControllerFilesPath := filepath.Join(tplPackage.Dir, "per")
+		err = utils.ReadTplFilesInDir(perControllerFilesPath, out.TemplatedPerController)
 		if err != nil {
 			return templates.GenerateTemplatesInput{}, err
 		}

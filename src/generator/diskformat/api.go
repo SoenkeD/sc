@@ -22,6 +22,8 @@ func Transform2DiskFormat(input GenerationInput, tplIn templates.GenerateTemplat
 	actionsDir := filepath.Join(baseDir, "actions")
 	guardsDir := filepath.Join(baseDir, "guards")
 
+	gen.RepoRoot = input.RepoRoot
+
 	gen.Dirs = append(gen.Dirs,
 		baseDir,
 		ctlDir,
@@ -102,6 +104,12 @@ func Transform2DiskFormat(input GenerationInput, tplIn templates.GenerateTemplat
 	gen.Files = append(gen.Files, guardTests...)
 
 	gen.Files = append(gen.Files, generateStateExtensions(input.TemplatedStateExtensions, cfg.Language)...)
+
+	perCtl, err := generatePerControllerAll(tplIn.TemplatedPerController, input.PerControllerTargets, input.CtlName, importRoot)
+	if err != nil {
+		return Generation{}, err
+	}
+	gen.Files = append(gen.Files, perCtl...)
 
 	return gen, nil
 }

@@ -22,15 +22,18 @@ type GenerationInput struct {
 	States                   []string
 	HasActions               bool
 	HasGuards                bool
+	PerController            map[string]string
+	PerControllerTargets     map[string]string
 }
 
 type GeneratedFile struct {
-	Type            string
-	MarkAsGenerated bool
-	Name            string
-	Path            string
-	Content         []byte
-	ForceWrite      bool
+	Type                 string
+	MarkAsGenerated      bool
+	Name                 string
+	Path                 string
+	PathStartsAtRepoRoot bool
+	Content              []byte
+	ForceWrite           bool
 }
 
 func (file GeneratedFile) GetFilePath(fileExtension string, enableGeneratedFileExtension, enableFileCapitalization bool) string {
@@ -52,6 +55,7 @@ func (file GeneratedFile) GetFilePath(fileExtension string, enableGeneratedFileE
 }
 
 type Generation struct {
+	RepoRoot string
 	BasePath string
 	Dirs     []string
 	Files    []GeneratedFile
@@ -61,6 +65,9 @@ func getFuncMap() *template.FuncMap {
 	return &template.FuncMap{
 		"replaceAll": strings.ReplaceAll,
 		"toUpper":    strings.ToUpper,
+		"capitalize": func(s string) string {
+			return strings.ToUpper(s[:1]) + s[1:]
+		},
 	}
 }
 
