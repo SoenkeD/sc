@@ -69,4 +69,10 @@ templates:
 # if the list is empty.
     exclusive: 
     - "my-ctl"
+
+# add templates target directories for those applied for each controller
+# here we have apply which is in some template dir under per/apply.tpl
+# it will be written to e.g. REPO_ROOT/src/resources/zz_gen_CTL_apply.go
+perControllerTargets:
+  apply: src/resources
 ```
