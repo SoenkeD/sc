@@ -78,3 +78,56 @@ sc init --setup https://github.com/SoenkeD/sc-go-templates/main/sc/setup \
 
 ## export
 tbd.
+
+## extend
+The `sc extend` command can be used to extend a template `.plantuml` file.
+This may be useful when having e.g. a shared initialization and closing phase
+for some controllers. 
+
+### Example
+The template:
+```
+@startuml template
+
+[*] -[bold]-> Initializing
+
+state Initializing {
+    [*] -[bold]-> [*]
+}
+Initializing -[bold]-> Processing
+
+Processing -[dotted]-> Closing
+Processing -[bold]-> Closing
+
+state Closing {
+  [*] --> HandlingError : [ HasError ]
+  [*] -[bold]-> [*]
+
+  HandlingError: SetErrorMsg
+  HandlingError: ClearError
+  HandlingError -[bold]-> [*]
+}
+
+Closing -[bold]-> [*]
+```
+
+The extension:
+```
+@startuml extension
+
+state Processing {
+  [*] -[bold]-> Loading
+
+  Loading: Load
+  Loading -[bold]-> Writing
+
+  Writing: Write
+  Writing -[bold]-> [*]
+}
+```
+
+Run:
+```bash
+sc extend --template path/to/template.plantuml --extension path/to/extension
+```
+You can add multiple extensions. 
