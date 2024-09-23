@@ -42,14 +42,22 @@ func generateGuard(guardID, guardCode, importRoot, guardTpl string, templatedGua
 
 	var isTemplated bool
 	if _, ok := templatedGuards[guardID]; ok {
-		code = templatedGuards[guardID]
+
+		code, err = templates.ExecTemplate(guardID, templatedGuards[guardID], GenerateActionTestTplInput{
+			ImportRoot: importRoot,
+			Code:       guardCode,
+		}, getFuncMap())
+		if err != nil {
+			return GeneratedFile{}, err
+		}
+
 		isTemplated = true
 	}
 	return GeneratedFile{
 		Type:            "guard",
 		MarkAsGenerated: isTemplated,
 		Path:            "guards/",
-		Name:            fmt.Sprintf("%s", guardID),
+		Name:            guardID,
 		Content:         []byte(code),
 	}, nil
 }
