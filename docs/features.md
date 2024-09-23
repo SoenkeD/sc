@@ -12,13 +12,16 @@ When writing something it will use templates over the default generation.
 So when generating an action it will use the template if available,
 but it would not overwrite an existing action with that template.  
 
-### (TODO) --clear
+### --clear
 The `sc` tool automatically detects no longer needed actions and guards
 and prints a message during the generation process.
 By adding the option `--clear` these files are removed automatically.
 
-### (TODO) --force
-tbd.
+### --force-generated
+By adding the flag `--force-generated` all files,
+which are marked as generated,
+are written again.
+This may be useful to apply template changes.
 
 ## path
 Executing `sc path --name myctl --route route.json` will generate

@@ -8,7 +8,7 @@ import (
 	"github.com/SoenkeD/sc/src/generator/diskformat"
 )
 
-func WriteToDisk(gen diskformat.Generation, fileExtension string, enableGeneratedFileExtension, enableFileCapitalization bool) error {
+func WriteToDisk(gen diskformat.Generation, fileExtension string, enableGeneratedFileExtension, enableFileCapitalization, forceWriteGenerated bool) error {
 
 	for _, dir := range gen.Dirs {
 		_, err := os.Stat(dir)
@@ -21,6 +21,10 @@ func WriteToDisk(gen diskformat.Generation, fileExtension string, enableGenerate
 	}
 
 	for _, file := range gen.Files {
+
+		if forceWriteGenerated && file.MarkAsGenerated {
+			file.ForceWrite = true
+		}
 
 		genFilePath := file.GetFilePath(fileExtension, enableGeneratedFileExtension, enableFileCapitalization)
 		filePath := filepath.Join(gen.BasePath, genFilePath)

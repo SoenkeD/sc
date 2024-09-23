@@ -39,7 +39,7 @@ func ParseUmlFile(umlPath string) (st2 stage2.ParseUmlStage2, err error) {
 	return
 }
 
-func Generate(cfg types.Config, ctlName string, tplIn templates.GenerateTemplatesInput, clearUnnecessary bool) error {
+func Generate(cfg types.Config, ctlName string, tplIn templates.GenerateTemplatesInput, clearUnnecessary, forceWriteGenerated bool) error {
 
 	umlFilePath := filepath.Join(cfg.RepoRoot, cfg.CtlDir, ctlName, ctlName+".plantuml")
 	st2, err := ParseUmlFile(umlFilePath)
@@ -101,7 +101,7 @@ func Generate(cfg types.Config, ctlName string, tplIn templates.GenerateTemplate
 		}
 	}
 
-	err = aftercompilation.WriteToDisk(gen, cfg.Language, cfg.EnableGeneratedFilePrefix, cfg.EnableFileCapitalization)
+	err = aftercompilation.WriteToDisk(gen, cfg.Language, cfg.EnableGeneratedFilePrefix, cfg.EnableFileCapitalization, forceWriteGenerated)
 	if err != nil {
 		return err
 	}

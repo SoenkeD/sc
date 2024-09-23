@@ -12,6 +12,7 @@ import (
 
 var ctlName string
 var clearUnnecessary bool
+var forceWriteGenerated bool
 
 func init() {
 	genCmd.Flags().StringVarP(&config.RepoRoot, "root", "r", "", "base path to generate ctl in")
@@ -23,6 +24,8 @@ func init() {
 	genCmd.Flags().StringVarP(&ctlName, "name", "n", "", "name of the ctl")
 
 	genCmd.Flags().BoolVarP(&clearUnnecessary, "clear", "u", false, "if true it deletes unnecessary actions & guards")
+
+	genCmd.Flags().BoolVar(&forceWriteGenerated, "force-generated", false, "if true it writes all generated files even if they already exist")
 
 	rootCmd.AddCommand(genCmd)
 }
@@ -95,6 +98,7 @@ var genCmd = &cobra.Command{
 			ctlName,
 			templates,
 			clearUnnecessary,
+			forceWriteGenerated,
 		)
 		if err != nil {
 			return err
