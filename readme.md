@@ -15,7 +15,10 @@ which contains a nice collection of information and explanations
 regarding this topic. 
 
 ## Install sc
-The build-in version check and update capabilities require a build flag to be set.
+The build-in version check and update capabilities 
+require a build flag to be set.
+Consider removing an existing version before by running
+`rm ~/go/bin/sc`. 
 To do this there are currently two options:
 
 1. Automatic
