@@ -1,23 +1,22 @@
 package utils
 
 import (
-	"fmt"
+	"os"
 	"os/exec"
-	"strings"
 )
 
-func ExecuteCommand(command, dir string) (string, error) {
+func ExecuteCommand(command string, args, env []string, dir string) (string, error) {
 
-	parts := strings.Fields(command)
-
-	if len(parts) == 0 {
-		return "", fmt.Errorf("no command provided")
-	}
-
-	cmd := exec.Command(parts[0], parts[1:]...)
+	cmd := exec.Command(command, args...)
 
 	if dir != "" {
 		cmd.Dir = dir
+	}
+
+	cmd.Env = os.Environ()
+
+	if len(env) > 0 {
+		cmd.Env = append(cmd.Env, env...)
 	}
 
 	output, err := cmd.CombinedOutput() //  stdout & stderr

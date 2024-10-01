@@ -14,9 +14,22 @@ consider visiting [statechart.dev](https://statecharts.dev),
 which contains a nice collection of information and explanations 
 regarding this topic. 
 
+## Install sc
+The build-in version check and update capabilities require a build flag to be set.
+To do this there are currently two options:
+
+1. Automatic
+- Install from Github `go install github.com/SoenkeD/sc@main`
+- Update it to set the build flag `sc version --update`
+
+2. Manual
+- Find [the most recent (long) commit hash of the main branch](https://github.com/SoenkeD/sc-go-templates/commits/main/) 
+(e.g. 78bd6bc89736f4ac35ca7aaf1fe0f9cba4e31159) 
+- Replace `COMMIT_HASH` with the recent has and execute `GOFLAGS=-ldflags=-X=main.commitHash=COMMIT_HASH go install github.com/SoenkeD/sc@main`
+
 ## Get Started
 1. Install the `sc` tool from GitHub: \
-`go install github.com/SoenkeD/sc`
+`go install github.com/SoenkeD/sc@main`
 
 2. (optional) [Read the documentation](docs/readme.md)
 

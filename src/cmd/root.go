@@ -53,7 +53,7 @@ var rootCmd = &cobra.Command{
 	Short: "SC is a state chart code generator",
 	Long:  ``,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		if cmd.Name() != "init" {
+		if cmd.Name() != "init" && cmd.Name() != "version" {
 			readCfg()
 			validateCfg()
 		}

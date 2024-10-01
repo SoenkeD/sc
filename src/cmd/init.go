@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/SoenkeD/sc/src/generator/templates"
 	"github.com/SoenkeD/sc/src/types"
@@ -251,7 +252,9 @@ func execInitCmd(cmd string) error {
 		return fmt.Errorf("user stopped the init script")
 	}
 
-	cmdOut, err := utils.ExecuteCommand(execCmd, config.RepoRoot)
+	parts := strings.Fields(execCmd)
+
+	cmdOut, err := utils.ExecuteCommand(parts[0], parts[1:], nil, config.RepoRoot)
 	if err != nil {
 		log.Printf("Executing the command=%s failed with=%s and output %s", execCmd, err, cmdOut)
 		return err

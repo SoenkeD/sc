@@ -137,3 +137,10 @@ sc extend --template path/to/template.plantuml --extension path/to/extension
 You can add multiple extensions. 
 The first line in the each file will be removed and 
 replace with `@startuml CTL_NAME`.
+
+## version
+To check if the most recent version of `sc` is installed
+run `sc version`.
+If a newer version exists it will ask to install the new version.
+Then executing `sc version --update` the most recent version of `sc`
+will be installed / reinstalled. 
