@@ -28,8 +28,7 @@ To do this there are currently two options:
 - Replace `COMMIT_HASH` with the recent has and execute `GOFLAGS=-ldflags=-X=main.commitHash=COMMIT_HASH go install github.com/SoenkeD/sc@main`
 
 ## Get Started
-1. Install the `sc` tool from GitHub: \
-`go install github.com/SoenkeD/sc@main`
+1. Install the `sc` tool from GitHub (see above)
 
 2. (optional) [Read the documentation](docs/readme.md)
 
