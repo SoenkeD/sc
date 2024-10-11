@@ -16,6 +16,7 @@ import (
 )
 
 var routeFile string
+var outDir string
 
 func init() {
 	pathCmd.Flags().StringVarP(&config.RepoRoot, "root", "r", "", "base path to generate ctl in")
@@ -27,6 +28,8 @@ func init() {
 	pathCmd.Flags().StringVarP(&ctlName, "name", "n", "", "name of the ctl")
 
 	pathCmd.Flags().StringVarP(&routeFile, "route", "i", "", "path to the route input file (contains JSON with key \"route\")")
+
+	pathCmd.Flags().StringVar(&outDir, "out-dir", "", "directory where the output file is written to")
 
 	rootCmd.AddCommand(pathCmd)
 }
@@ -271,7 +274,8 @@ var pathCmd = &cobra.Command{
 		umlFileContent := renderUml(code.Name, lines)
 
 		// write output
-		err = os.WriteFile(ctlName+".route.plantuml", []byte(umlFileContent), 0777)
+		outFile := filepath.Join(outDir, "route."+ctlName+".plantuml")
+		err = os.WriteFile(outFile, []byte(umlFileContent), 0777)
 		if err != nil {
 			return err
 		}
