@@ -28,6 +28,9 @@ Executing `sc path --name myctl --route route.json --out-dir src/controller/inte
 a visualization of the path taken through the state machine. 
 It create / overwrites a file named `myctl.route.plantuml` 
 in your current directory. 
+It's a known issue that the output `.plantuml` file's content order may differ
+between different execution.
+This will be addressed but is good a the moment.
 
 ![Example output](imgs/feature_log_example.png)
 
