@@ -38,10 +38,6 @@ type GenerateBaseCtlTplInput struct {
 	ImportRoot string
 }
 
-type GenerateBaseReconcilerTplInput struct {
-	ImportRoot string
-}
-
 type GenerateBaseTypesTplInput struct {
 	ImportRoot string
 }
@@ -64,13 +60,6 @@ func generateCtlFiles(ctlDirName, importRoot string, tplIn templates.GenerateTem
 		return nil, err
 	}
 
-	reconcilerFile, err := templates.ExecTemplate("reconciler", tplIn.TemplatedBaseFiles["reconciler"], GenerateBaseReconcilerTplInput{
-		ImportRoot: TransformImport(importRoot, separator),
-	}, getFuncMap())
-	if err != nil {
-		return nil, err
-	}
-
 	files = append(
 		files,
 		GeneratedFile{
@@ -79,13 +68,6 @@ func generateCtlFiles(ctlDirName, importRoot string, tplIn templates.GenerateTem
 			MarkAsGenerated: true,
 			Name:            "ctl",
 			Content:         []byte(ctlFile),
-		},
-		GeneratedFile{
-			Path:            ctlDirName,
-			Type:            "ctl",
-			MarkAsGenerated: true,
-			Name:            "reconciler",
-			Content:         []byte(reconcilerFile),
 		},
 	)
 
