@@ -6,7 +6,7 @@ import (
 	"github.com/SoenkeD/sc/src/generator/templates"
 )
 
-func generatePerControllerAll(templatedPerController, perCtlDir map[string]string, ctlName, importRoot string) ([]GeneratedFile, error) {
+func generatePerControllerAll(templatedPerController, perCtlDir map[string]string, ctlName, importRoot, module string) ([]GeneratedFile, error) {
 	var files []GeneratedFile
 
 	for perControllerId, perController := range templatedPerController {
@@ -17,7 +17,7 @@ func generatePerControllerAll(templatedPerController, perCtlDir map[string]strin
 			continue
 		}
 
-		file, err := generatePerController(perControllerId, perController, targetDir, ctlName, importRoot)
+		file, err := generatePerController(perControllerId, perController, targetDir, ctlName, importRoot, module)
 		if err != nil {
 			return nil, err
 		}
@@ -28,11 +28,18 @@ func generatePerControllerAll(templatedPerController, perCtlDir map[string]strin
 	return files, nil
 }
 
-func generatePerController(perCtlId, perCtl, targetDir, ctlName, importRoot string) (GeneratedFile, error) {
+type GeneratePerCtlTplInput struct {
+	Name       string
+	ImportRoot string
+	Module     string
+}
 
-	code, err := templates.ExecTemplate(perCtlId, perCtl, GenerateCtlTplInput{
+func generatePerController(perCtlId, perCtl, targetDir, ctlName, importRoot, module string) (GeneratedFile, error) {
+
+	code, err := templates.ExecTemplate(perCtlId, perCtl, GeneratePerCtlTplInput{
 		Name:       ctlName,
 		ImportRoot: importRoot,
+		Module:     module,
 	}, getFuncMap())
 	if err != nil {
 		return GeneratedFile{}, err

@@ -105,7 +105,7 @@ func Transform2DiskFormat(input GenerationInput, tplIn templates.GenerateTemplat
 
 	gen.Files = append(gen.Files, generateStateExtensions(input.TemplatedStateExtensions, cfg.Language)...)
 
-	perCtl, err := generatePerControllerAll(tplIn.TemplatedPerController, input.PerControllerTargets, input.CtlName, importRoot)
+	perCtl, err := generatePerControllerAll(tplIn.TemplatedPerController, input.PerControllerTargets, input.CtlName, importRoot, cfg.Module)
 	if err != nil {
 		return Generation{}, err
 	}
