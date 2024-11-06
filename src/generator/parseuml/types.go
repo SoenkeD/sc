@@ -16,6 +16,7 @@ type ParsedTransition struct {
 	Action       string
 	ActionParams []string
 	Negation     bool
+	Options      []string
 }
 
 type ParseStateAction struct {

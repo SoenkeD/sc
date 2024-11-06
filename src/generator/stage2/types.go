@@ -15,6 +15,7 @@ type ParseTransitionStage2 struct {
 	Type         types.TransitionType
 	Target       string
 	Negation     bool
+	Options      []string
 }
 
 func (tr *ParseTransitionStage2) GetId() string {
@@ -33,6 +34,7 @@ func (tr *ParseTransitionStage2) GetId() string {
 			string(tr.Type),
 			strings.ReplaceAll(tr.Target, "/", ""),
 			negationStr,
+			strings.Join(tr.Options, ","),
 		},
 		"/",
 	)
@@ -46,9 +48,6 @@ type ParsedStateActionStage2 struct {
 type ParsedState struct {
 	Actions     []ParsedStateActionStage2
 	Transitions []ParseTransitionStage2
-}
-
-type ParsedTransition struct {
 }
 
 type ParseUmlStage2 struct {

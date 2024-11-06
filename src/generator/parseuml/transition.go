@@ -45,7 +45,7 @@ func GetTransitionArgs(arrow string) ([]string, error) {
 	return args, nil
 }
 
-func ParseTransitionType(arrow string) (taType types.TransitionType, err error) {
+func ParseTransitionType(arrow string) (taType types.TransitionType, options []string, err error) {
 
 	args, err := GetTransitionArgs(arrow)
 	if err != nil {
@@ -53,14 +53,14 @@ func ParseTransitionType(arrow string) (taType types.TransitionType, err error) 
 	}
 
 	if slices.Contains(args, "bold") {
-		return types.TransitionTypeHappy, nil
+		return types.TransitionTypeHappy, args, nil
 	}
 
 	if slices.Contains(args, "dotted") {
-		return types.TransitionTypeError, nil
+		return types.TransitionTypeError, args, nil
 	}
 
-	return types.TransitionTypeNormal, nil
+	return types.TransitionTypeNormal, args, nil
 }
 
 func ParseTransition(tokens []string, linePart2 string) (ta ParsedTransition, err error) {
@@ -98,7 +98,7 @@ func ParseTransition(tokens []string, linePart2 string) (ta ParsedTransition, er
 		}
 	}
 
-	taType, err := ParseTransitionType(tokens[1])
+	taType, options, err := ParseTransitionType(tokens[1])
 	if err != nil {
 		return
 	}
@@ -112,6 +112,7 @@ func ParseTransition(tokens []string, linePart2 string) (ta ParsedTransition, er
 		Action:       action,
 		ActionParams: actionParams,
 		Negation:     negation,
+		Options:      options,
 	}
 
 	return

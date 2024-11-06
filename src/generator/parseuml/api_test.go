@@ -53,17 +53,19 @@ var _ = Describe("Stage One", Ordered, func() {
 
 	It("Check start state transition", func() {
 		Expect(out.Transitions).To(HaveKeyWithValue("happy[*]Initialising", parseuml.ParsedTransition{
-			Type:   types.TransitionTypeHappy,
-			Start:  "[*]",
-			Target: "Initialising",
+			Type:    types.TransitionTypeHappy,
+			Start:   "[*]",
+			Target:  "Initialising",
+			Options: []string{"bold"},
 		}))
 	})
 
 	It("Check end state transition", func() {
 		Expect(out.Transitions).To(HaveKeyWithValue("happyInitialisingClosing", parseuml.ParsedTransition{
-			Type:   types.TransitionTypeHappy,
-			Start:  "Initialising",
-			Target: "Closing",
+			Type:    types.TransitionTypeHappy,
+			Start:   "Initialising",
+			Target:  "Closing",
+			Options: []string{"bold"},
 		}))
 	})
 
@@ -84,9 +86,10 @@ var _ = Describe("Stage One", Ordered, func() {
 		}))
 
 		Expect(out.Transitions).To(HaveKeyWithValue("happy[*]SettingUp", parseuml.ParsedTransition{
-			Type:   types.TransitionTypeHappy,
-			Start:  "[*]",
-			Target: "SettingUp",
+			Type:    types.TransitionTypeHappy,
+			Start:   "[*]",
+			Target:  "SettingUp",
+			Options: []string{"bold"},
 		}))
 
 		Expect(out.Transitions).To(HaveKeyWithValue("normalSettingUpRaisingErrorFailedClearErrorSetupError", parseuml.ParsedTransition{
@@ -99,9 +102,10 @@ var _ = Describe("Stage One", Ordered, func() {
 		}))
 
 		Expect(out.Transitions).To(HaveKeyWithValue("happySettingUp[*]", parseuml.ParsedTransition{
-			Type:   types.TransitionTypeHappy,
-			Start:  "SettingUp",
-			Target: "[*]",
+			Type:    types.TransitionTypeHappy,
+			Start:   "SettingUp",
+			Target:  "[*]",
+			Options: []string{"bold"},
 		}))
 
 		By("checking RasingErr")
@@ -112,9 +116,10 @@ var _ = Describe("Stage One", Ordered, func() {
 		}))
 
 		Expect(out.Transitions).To(HaveKeyWithValue("happyRaisingError[*]", parseuml.ParsedTransition{
-			Type:   types.TransitionTypeHappy,
-			Start:  "RaisingError",
-			Target: "[*]",
+			Type:    types.TransitionTypeHappy,
+			Start:   "RaisingError",
+			Target:  "[*]",
+			Options: []string{"bold"},
 		}))
 	})
 
@@ -128,9 +133,10 @@ var _ = Describe("Stage One", Ordered, func() {
 		}))
 
 		Expect(out.Transitions).To(HaveKeyWithValue("happyPrintingError[*]", parseuml.ParsedTransition{
-			Type:   types.TransitionTypeHappy,
-			Start:  "PrintingError",
-			Target: "[*]",
+			Type:    types.TransitionTypeHappy,
+			Start:   "PrintingError",
+			Target:  "[*]",
+			Options: []string{"bold"},
 		}))
 
 		Expect(out.StateActions).To(HaveKeyWithValue("PrintingSuccessPrintSuccess", parseuml.ParseStateAction{
@@ -140,9 +146,10 @@ var _ = Describe("Stage One", Ordered, func() {
 		}))
 
 		Expect(out.Transitions).To(HaveKeyWithValue("happyPrintingSuccess[*]", parseuml.ParsedTransition{
-			Type:   types.TransitionTypeHappy,
-			Start:  "PrintingSuccess",
-			Target: "[*]",
+			Type:    types.TransitionTypeHappy,
+			Start:   "PrintingSuccess",
+			Target:  "[*]",
+			Options: []string{"bold"},
 		}))
 
 		Expect(out.Transitions).To(HaveKeyWithValue("normal[*]PrintingErrorHasErrorReadConfigError", parseuml.ParsedTransition{
@@ -156,11 +163,12 @@ var _ = Describe("Stage One", Ordered, func() {
 		}))
 
 		Expect(out.Transitions).To(HaveKeyWithValue("happy[*]PrintingSuccess", parseuml.ParsedTransition{
-			Type:   types.TransitionTypeHappy,
-			Start:  "[*]",
-			Target: "PrintingSuccess",
-			Guard:  "",
-			Action: "",
+			Type:    types.TransitionTypeHappy,
+			Start:   "[*]",
+			Target:  "PrintingSuccess",
+			Guard:   "",
+			Action:  "",
+			Options: []string{"bold"},
 		}))
 	})
 

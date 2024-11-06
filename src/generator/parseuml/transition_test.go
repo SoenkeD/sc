@@ -10,25 +10,28 @@ import (
 
 var _ = Describe("ParseTransitionType()", func() {
 	It("Normal transition", func() {
-		ta, err := parseuml.ParseTransitionType(parseuml.TransitionNormal)
+		ta, args, err := parseuml.ParseTransitionType(parseuml.TransitionNormal)
 		Expect(err).ToNot(HaveOccurred())
 		Expect(ta).To(Equal(types.TransitionTypeNormal))
+		Expect(args).To(HaveLen(0))
 	})
 
 	It("Happy transition", func() {
-		ta, err := parseuml.ParseTransitionType(parseuml.TransitionHappy)
+		ta, args, err := parseuml.ParseTransitionType(parseuml.TransitionHappy)
 		Expect(err).ToNot(HaveOccurred())
 		Expect(ta).To(Equal(types.TransitionTypeHappy))
+		Expect(args).To(HaveLen(1))
 	})
 
 	It("Error transition", func() {
-		ta, err := parseuml.ParseTransitionType(parseuml.TransitionError)
+		ta, args, err := parseuml.ParseTransitionType(parseuml.TransitionError)
 		Expect(err).ToNot(HaveOccurred())
 		Expect(ta).To(Equal(types.TransitionTypeError))
+		Expect(args).To(HaveLen(1))
 	})
 
 	It("Unknown transition", func() {
-		_, err := parseuml.ParseTransitionType("-" + parseuml.TransitionNormal)
+		_, _, err := parseuml.ParseTransitionType("-" + parseuml.TransitionNormal)
 		Expect(err).To(HaveOccurred())
 	})
 })
