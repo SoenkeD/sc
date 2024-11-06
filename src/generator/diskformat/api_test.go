@@ -100,11 +100,6 @@ var _ = Describe("Transform2DiskFormat", Ordered, func() {
 				HaveField("Path", Equal("controller/")),
 			),
 			SatisfyAll(
-				HaveField("Type", Equal("ctl")),
-				HaveField("Name", Equal("reconciler")),
-				HaveField("Path", Equal("controller/")),
-			),
-			SatisfyAll(
 				HaveField("Type", Equal("actions")),
 				HaveField("Name", Equal("actions")),
 				HaveField("Path", Equal("actions/")),
