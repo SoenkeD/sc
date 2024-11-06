@@ -2,15 +2,8 @@ package parseuml
 
 import (
 	"fmt"
-	"regexp"
 	"strings"
 )
-
-var StateRegex *regexp.Regexp
-
-func init() {
-	StateRegex = regexp.MustCompile("^state .* {$")
-}
 
 func GenerateFromUml(umlStr string) (uml ParseUmlStage1, err error) {
 

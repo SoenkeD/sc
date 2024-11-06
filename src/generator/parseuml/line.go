@@ -42,12 +42,20 @@ func ParseLine(line string, uml *ParseUmlStage1) (string, error) {
 		return "", nil
 	}
 
-	// detect state group opening
-	if StateRegex.MatchString(line) {
-		prefix := "state "
-		postfix := " {" // TODO: allow missing space idea trim
-		stateGroup := line[len(prefix) : len(line)-len(postfix)]
-		uml.AddStateGroup(stateGroup)
+	if strings.HasPrefix(line, "state ") {
+		afterStatePrefix := strings.TrimPrefix(line, "state ")
+
+		if strings.HasSuffix(afterStatePrefix, "{") {
+			// is a compound state
+			compoundInfo := strings.TrimSpace(strings.TrimSuffix(afterStatePrefix, "{"))
+			infoParts := strings.Split(compoundInfo, " ")
+			uml.AddStateGroup(infoParts[0])
+
+			return "", nil
+		}
+
+		// is some like state Demo #green
+		// so atm. we do not need to store it
 		return "", nil
 	}
 
