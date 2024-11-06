@@ -2,6 +2,7 @@ package parseuml
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/SoenkeD/sc/src/types"
@@ -11,21 +12,55 @@ const TransitionNormal = "-->"
 const TransitionHappy = "-[bold]->"
 const TransitionError = "-[dotted]->"
 
+func GetTransitionArgs(arrow string) ([]string, error) {
+	var args []string
+
+	if !strings.HasPrefix(arrow, "-") {
+		return nil, fmt.Errorf("no valid arrow: not ending with ->")
+	}
+	arrow = strings.TrimPrefix(arrow, "-")
+
+	if !strings.HasSuffix(arrow, "->") {
+		return nil, fmt.Errorf("no valid arrow: not ending with ->")
+	}
+	arrow = strings.TrimSuffix(arrow, "->")
+
+	if len(arrow) == 0 {
+		// has no arguments
+		return nil, nil
+	}
+
+	if !strings.HasPrefix(arrow, "[") || !strings.HasSuffix(arrow, "]") {
+		return nil, fmt.Errorf("no valid arrow: arguments not inside of []")
+	}
+
+	arrow = strings.TrimPrefix(arrow, "[")
+	arrow = strings.TrimSuffix(arrow, "]")
+
+	strArgs := strings.Split(arrow, ",")
+	for _, strArg := range strArgs {
+		args = append(args, strings.TrimSpace(strArg))
+	}
+
+	return args, nil
+}
+
 func ParseTransitionType(arrow string) (taType types.TransitionType, err error) {
 
-	switch arrow {
-	case TransitionNormal:
-		taType = types.TransitionTypeNormal
-	case "-[bold]->":
-		taType = types.TransitionTypeHappy // TODO add happy handling
-	case "-[dotted]->":
-		taType = types.TransitionTypeError
-	default:
-		err = fmt.Errorf("unknown transition type: %s", arrow)
+	args, err := GetTransitionArgs(arrow)
+	if err != nil {
 		return
 	}
 
-	return
+	if slices.Contains(args, "bold") {
+		return types.TransitionTypeHappy, nil
+	}
+
+	if slices.Contains(args, "dotted") {
+		return types.TransitionTypeError, nil
+	}
+
+	return types.TransitionTypeNormal, nil
 }
 
 func ParseTransition(tokens []string, linePart2 string) (ta ParsedTransition, err error) {

@@ -27,8 +27,50 @@ var _ = Describe("ParseTransitionType()", func() {
 		Expect(ta).To(Equal(types.TransitionTypeError))
 	})
 
-	It("Unkown transition", func() {
+	It("Unknown transition", func() {
 		_, err := parseuml.ParseTransitionType("-" + parseuml.TransitionNormal)
+		Expect(err).To(HaveOccurred())
+	})
+})
+
+var _ = Describe("GetTransitionArgs()", func() {
+	It("Normal transition", func() {
+		ta, err := parseuml.GetTransitionArgs(parseuml.TransitionNormal)
+		Expect(err).ToNot(HaveOccurred())
+		Expect(ta).To(HaveLen(0))
+	})
+
+	It("Normal transition with color", func() {
+		ta, err := parseuml.GetTransitionArgs("-[#green]->")
+		Expect(err).ToNot(HaveOccurred())
+		Expect(ta).To(ConsistOf("#green"))
+	})
+
+	It("Happy transition", func() {
+		ta, err := parseuml.GetTransitionArgs(parseuml.TransitionHappy)
+		Expect(err).ToNot(HaveOccurred())
+		Expect(ta).To(ConsistOf("bold"))
+	})
+
+	It("Happy transition with color", func() {
+		ta, err := parseuml.GetTransitionArgs("-[bold,#green]->")
+		Expect(err).ToNot(HaveOccurred())
+		Expect(ta).To(ConsistOf("bold", "#green"))
+	})
+
+	It("Error transition", func() {
+		ta, err := parseuml.GetTransitionArgs(parseuml.TransitionError)
+		Expect(err).ToNot(HaveOccurred())
+		Expect(ta).To(ConsistOf("dotted"))
+	})
+
+	It("Unknown prefix", func() {
+		_, err := parseuml.GetTransitionArgs("-" + parseuml.TransitionNormal)
+		Expect(err).To(HaveOccurred())
+	})
+
+	It("Unknown suffix", func() {
+		_, err := parseuml.GetTransitionArgs(parseuml.TransitionNormal + ">")
 		Expect(err).To(HaveOccurred())
 	})
 })
