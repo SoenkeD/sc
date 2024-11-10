@@ -13,10 +13,9 @@ const TransitionHappy = "-[bold]->"
 const TransitionError = "-[dotted]->"
 
 func GetTransitionArgs(arrow string) ([]string, error) {
-	var args []string
 
-	if !strings.HasPrefix(arrow, "-") {
-		return nil, fmt.Errorf("no valid arrow: not ending with ->")
+	if !strings.HasPrefix(arrow, "-") || strings.HasPrefix(strings.TrimSuffix(strings.TrimPrefix(arrow, "-"), "->"), "-") {
+		return nil, fmt.Errorf("no valid arrow: not starting with -")
 	}
 	arrow = strings.TrimPrefix(arrow, "-")
 
@@ -30,19 +29,40 @@ func GetTransitionArgs(arrow string) ([]string, error) {
 		return nil, nil
 	}
 
-	if !strings.HasPrefix(arrow, "[") || !strings.HasSuffix(arrow, "]") {
-		return nil, fmt.Errorf("no valid arrow: arguments not inside of []")
+	// check if it has options in []
+	if strings.HasSuffix(arrow, "]") {
+
+		var args []string
+		var optStr string
+		if strings.HasPrefix(arrow, "[") {
+			// has no directions but options
+			opts := strings.TrimPrefix(arrow, "[")
+			opts = strings.TrimSuffix(opts, "]")
+
+			optStr = opts
+		} else {
+			// has direction and options
+			parts := strings.Split(arrow, "[")
+
+			if len(parts) != 2 {
+				return nil, fmt.Errorf("")
+			}
+
+			args = append(args, parts[0])
+			optStr = strings.TrimSuffix(parts[1], "]")
+		}
+
+		strArgs := strings.Split(optStr, ",")
+		for _, strArg := range strArgs {
+			args = append(args, strings.TrimSpace(strArg))
+		}
+
+		return args, nil
+
 	}
 
-	arrow = strings.TrimPrefix(arrow, "[")
-	arrow = strings.TrimSuffix(arrow, "]")
-
-	strArgs := strings.Split(arrow, ",")
-	for _, strArg := range strArgs {
-		args = append(args, strings.TrimSpace(strArg))
-	}
-
-	return args, nil
+	// only has direction
+	return []string{arrow}, nil
 }
 
 func ParseTransitionType(arrow string) (taType types.TransitionType, options []string, err error) {

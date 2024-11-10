@@ -76,6 +76,11 @@ var _ = Describe("GetTransitionArgs()", func() {
 		_, err := parseuml.GetTransitionArgs(parseuml.TransitionNormal + ">")
 		Expect(err).To(HaveOccurred())
 	})
+
+	It("To short arrow", func() {
+		_, err := parseuml.GetTransitionArgs("->")
+		Expect(err).To(HaveOccurred())
+	})
 })
 
 var _ = Describe("ParseTransition()", func() {
