@@ -5,7 +5,10 @@ import (
 	"strings"
 )
 
-const UML_PREFIX = "@startuml"
+const (
+	UmlPrefix = "@startuml"
+	UmlSuffix = "@enduml"
+)
 
 func ParseLine(line string, uml *ParseUmlStage1) (string, error) {
 	// trim spaces
@@ -27,12 +30,17 @@ func ParseLine(line string, uml *ParseUmlStage1) (string, error) {
 	}
 
 	// parse headline
-	if strings.HasPrefix(line, UML_PREFIX) {
+	if strings.HasPrefix(line, UmlPrefix) {
 		words := strings.SplitN(line, " ", 2)
 		if len(words) != 2 {
 			return "head", fmt.Errorf("missing head")
 		}
 		uml.Name = words[1]
+		return "", nil
+	}
+
+	// parse optional closing line => can be ignored
+	if strings.HasPrefix(line, UmlSuffix) {
 		return "", nil
 	}
 

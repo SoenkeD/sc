@@ -45,7 +45,7 @@ var _ = Describe("ParseLine()", func() {
 	})
 
 	It("Headline", func() {
-		area, err := parseuml.ParseLine(parseuml.UML_PREFIX+" UmlName", uml)
+		area, err := parseuml.ParseLine(parseuml.UmlPrefix+" UmlName", uml)
 		Expect(err).ToNot(HaveOccurred())
 		Expect(area).To(BeEmpty())
 		Expect(uml.Name).To(Equal("UmlName"))
@@ -53,7 +53,7 @@ var _ = Describe("ParseLine()", func() {
 	})
 
 	It("Headline with comment", func() {
-		area, err := parseuml.ParseLine(parseuml.UML_PREFIX+" UmlName 'UmlName", uml)
+		area, err := parseuml.ParseLine(parseuml.UmlPrefix+" UmlName 'UmlName", uml)
 		Expect(err).ToNot(HaveOccurred())
 		Expect(area).To(BeEmpty())
 		Expect(uml.Name).To(Equal("UmlName"))
@@ -61,9 +61,15 @@ var _ = Describe("ParseLine()", func() {
 	})
 
 	It("Headline without name", func() {
-		area, err := parseuml.ParseLine(parseuml.UML_PREFIX+"MissingSpace", uml)
+		area, err := parseuml.ParseLine(parseuml.UmlPrefix+"MissingSpace", uml)
 		Expect(err).To(HaveOccurred())
 		Expect(area).To(Equal("head"))
+		Expect(uml.LinesInOrder).To(HaveLen(0))
+	})
+
+	It("Uml Suffix", func() {
+		_, err := parseuml.ParseLine(parseuml.UmlSuffix, uml)
+		Expect(err).ToNot(HaveOccurred())
 		Expect(uml.LinesInOrder).To(HaveLen(0))
 	})
 
