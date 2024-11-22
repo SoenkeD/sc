@@ -3,6 +3,7 @@ package cmd
 import (
 	"log"
 	"os"
+	"slices"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/spf13/cobra"
@@ -48,12 +49,14 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "path to the config file")
 }
 
+var cmdsWithoutConfig []string
+
 var rootCmd = &cobra.Command{
 	Use:   "sc",
 	Short: "SC is a state chart code generator",
 	Long:  ``,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		if cmd.Name() != "init" && cmd.Name() != "version" {
+		if !slices.Contains(cmdsWithoutConfig, cmd.Name()) {
 			readCfg()
 			validateCfg()
 		}

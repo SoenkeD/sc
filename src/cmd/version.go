@@ -23,7 +23,10 @@ var update bool
 func init() {
 	versionCmd.Flags().BoolVar(&update, "update", false, "reinstall the sc binary")
 	rootCmd.AddCommand(versionCmd)
+	cmdsWithoutConfig = append(cmdsWithoutConfig, CmdNameVersion)
 }
+
+const CmdNameVersion = "version"
 
 type Commit struct {
 	Sha string `json:"sha"`
@@ -111,7 +114,7 @@ func handleUpdate() {
 }
 
 var versionCmd = &cobra.Command{
-	Use:   "version",
+	Use:   CmdNameVersion,
 	Short: "Get version and update information",
 	RunE: func(cmd *cobra.Command, args []string) error {
 

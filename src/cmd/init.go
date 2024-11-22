@@ -30,6 +30,8 @@ func init() {
 	initCmd.Flags().StringVarP(&containerDriver, "container", "d", "docker", "container provider docker | podman. Defaults to docker")
 
 	rootCmd.AddCommand(initCmd)
+
+	cmdsWithoutConfig = append(cmdsWithoutConfig, CmdNameInit)
 }
 
 var (
@@ -57,8 +59,10 @@ type templateInputInitFiles struct {
 	Container string
 }
 
+const CmdNameInit = "init"
+
 var initCmd = &cobra.Command{
-	Use:   "init",
+	Use:   CmdNameInit,
 	Short: "Init an empty project",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
