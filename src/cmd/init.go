@@ -44,6 +44,7 @@ type projectSetupInput struct {
 	ScYaml                 string       `yaml:"scYaml"`
 	DefaultPlantUml        string       `yaml:"defaultPlantUml"`
 	AfterStructureCreation []string     `yaml:"afterStructureCreation"`
+	IntegratedSetup        []string     `yaml:integratedSetup`
 	AfterAll               []string     `yaml:"afterAll"`
 	Files                  []fileConfig `yaml:"files"`
 }
@@ -110,6 +111,14 @@ var initCmd = &cobra.Command{
 			}
 		} else {
 			log.Println("skipped creation of root directory")
+		}
+
+		// run integrated setup tasks
+		for _, cmd := range input.IntegratedSetup {
+			err = execInitCmd(cmd)
+			if err != nil {
+				return err
+			}
 		}
 
 		scPath := filepath.Join(config.RepoRoot, "sc")
