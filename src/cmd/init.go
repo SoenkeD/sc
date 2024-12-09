@@ -44,7 +44,7 @@ type projectSetupInput struct {
 	ScYaml                 string       `yaml:"scYaml"`
 	DefaultPlantUml        string       `yaml:"defaultPlantUml"`
 	AfterStructureCreation []string     `yaml:"afterStructureCreation"`
-	IntegratedSetup        []string     `yaml:integratedSetup`
+	IntegratedSetup        []string     `yaml:"integratedSetup"`
 	AfterAll               []string     `yaml:"afterAll"`
 	Files                  []fileConfig `yaml:"files"`
 }
@@ -244,6 +244,8 @@ var initCmd = &cobra.Command{
 	},
 }
 
+const PrefixBinBashC = "/bin/bash -c "
+
 func execInitCmd(cmd string) error {
 	execCmd, err := templates.ExecTemplate(cmd, cmd, templateInputInitFiles{
 		Cfg:       config,
@@ -266,6 +268,15 @@ func execInitCmd(cmd string) error {
 	}
 
 	parts := strings.Fields(execCmd)
+
+	// overwrite the parts to correctly pass a cmd to bash
+	if strings.HasPrefix(execCmd, PrefixBinBashC) {
+		parts = []string{
+			"/bin/bash",
+			"-c",
+			strings.TrimPrefix(execCmd, PrefixBinBashC),
+		}
+	}
 
 	cmdOut, err := utils.ExecuteCommand(parts[0], parts[1:], nil, config.RepoRoot)
 	if err != nil {
